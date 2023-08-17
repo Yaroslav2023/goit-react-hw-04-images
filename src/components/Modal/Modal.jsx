@@ -1,38 +1,38 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import cl from './modal.module.css';
+import { Context } from '../../context/imagesContext';
 
-class Modal extends React.Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
+const Modal = () => {
+  const { largeImage, setLargeImage, setShowModal } = useContext(Context);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.code === 'Escape') {
+        setLargeImage('');
+        setShowModal(false);
+      }
+      return;
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [setShowModal]);
 
-  handleKeyDown = e => {
-    if (e.code === 'Escape') {
-      this.props.onClose();
-    }
-  };
-
-  handleBackdropClick = e => {
+  const handleBackdropClick = e => {
     if (e.target === e.currentTarget) {
-      this.props.onClose();
+      setLargeImage('');
+      setShowModal(false);
     }
   };
 
-  render() {
-    const { largeImageURL } = this.props;
-
-    return (
-      <div className={cl.Overlay} onClick={this.handleBackdropClick}>
-        <div className={cl.Modal}>
-          <img src={largeImageURL} alt="" />
-        </div>
+  return (
+    <div className={cl.Overlay} onClick={handleBackdropClick}>
+      <div className={cl.Modal}>
+        <img src={largeImage} alt="" />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default Modal;
