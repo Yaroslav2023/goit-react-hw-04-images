@@ -20,7 +20,7 @@ export function GlobalContext({ children }) {
       return;
     }
     fetchImages();
-  }, [searchQuery]);
+  }, [searchQuery, fetchImages]);
 
   const fetchImages = async () => {
     const data = await getImages({ searchQuery, page, perPage });
