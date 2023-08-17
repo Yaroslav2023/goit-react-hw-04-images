@@ -28,7 +28,7 @@ export function GlobalContext({ children }) {
       setPage(page + 1);
     };
     fetchImages();
-  }, [searchQuery]);
+  }, [searchQuery, page, perPage]);
 
   //   const fetchImages = async () => {
   //     const data = await getImages({ searchQuery, page, perPage });

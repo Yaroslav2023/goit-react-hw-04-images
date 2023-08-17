@@ -17,7 +17,7 @@ const Modal = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [setShowModal, setLargeImage, setShowModal]);
+  }, [setShowModal, setLargeImage]);
 
   const handleBackdropClick = e => {
     if (e.target === e.currentTarget) {

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import cl from './imageGallery.module.css';
 import ImageGalleryItem from '../ImageGalleryItem';
-import { getImages } from 'api/search.images';
 import Button from '../Button';
 import Loader from '../Loader';
 import Modal from '../Modal';
