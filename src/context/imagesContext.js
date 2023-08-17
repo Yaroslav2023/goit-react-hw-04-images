@@ -8,6 +8,7 @@ export function GlobalContext({ children }) {
   const [search, setSearch] = useState('');
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
+  const [firstPage, setFirstPage] = useState(1);
   const [perPage, setPerPage] = useState(12);
   const [isLoading, setIsLoading] = useState(false);
   const [totalImages, setTotalImages] = useState(0);
@@ -18,30 +19,22 @@ export function GlobalContext({ children }) {
     if (!searchQuery) {
       return;
     }
-    const fetchImages = async () => {
-      const data = await getImages({ searchQuery, page, perPage });
-      if (!data.hits.length) {
-        throw alert('No images found');
-      }
-      setImages(data.hits);
-      setTotalImages(data.hits.length);
-      setPage(page + 1);
-    };
     fetchImages();
   }, [searchQuery]);
 
-  //   const fetchImages = async () => {
-  //     const data = await getImages({ searchQuery, page, perPage });
-  //     if (!data.hits.length) {
-  //       throw alert('No images found');
-  //     }
-  //     setImages(data.hits);
-  //     setTotalImages(data.hits.length);
-  //     setPage(page + 1);
-  //   };
+  const fetchImages = async () => {
+    const data = await getImages({ searchQuery, page, perPage });
+    if (!data.hits.length) {
+      throw alert('No images found');
+    }
+    setImages(data.hits);
+    setTotalImages(data.hits.length);
+    setPage(page + 1);
+  };
 
   const loadMoreImgs = async () => {
     setIsLoading(true);
+    setPage(page + 1);
     const data = await getImages({ searchQuery, page, perPage });
     setImages([...images, ...data.hits]);
     setTotalImages(data.hits.length);
@@ -60,6 +53,8 @@ export function GlobalContext({ children }) {
         setImages,
         page,
         setPage,
+        firstPage,
+        setFirstPage,
         perPage,
         setPerPage,
         isLoading,
