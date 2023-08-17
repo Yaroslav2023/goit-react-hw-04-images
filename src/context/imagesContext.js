@@ -15,13 +15,6 @@ export function GlobalContext({ children }) {
   const [showModal, setShowModal] = useState(false);
   const [largeImage, setLargeImage] = useState('');
 
-  useEffect(() => {
-    if (!searchQuery) {
-      return;
-    }
-    fetchImages();
-  }, [searchQuery, fetchImages]);
-
   const fetchImages = async () => {
     const data = await getImages({ searchQuery, page, perPage });
     if (!data.hits.length) {
@@ -29,12 +22,18 @@ export function GlobalContext({ children }) {
     }
     setImages(data.hits);
     setTotalImages(data.hits.length);
-    setPage(page + 1);
   };
+
+  useEffect(() => {
+    if (!searchQuery) {
+      return;
+    }
+    fetchImages();
+    setPage(page + 1);
+  }, [searchQuery]);
 
   const loadMoreImgs = async () => {
     setIsLoading(true);
-    setPage(page + 1);
     const data = await getImages({ searchQuery, page, perPage });
     setImages([...images, ...data.hits]);
     setTotalImages(data.hits.length);
