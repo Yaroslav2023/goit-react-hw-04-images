@@ -3,10 +3,12 @@ import cl from './searchbar.module.css';
 import { Context } from '../../context/imagesContext';
 
 const Searchbar = () => {
-  const { setSearchQuery, search, setSearch, setPage } = useContext(Context);
+  const { setSearchQuery, search, setSearch, setPage, setImages } =
+    useContext(Context);
 
   const handleSubmitForm = e => {
     e.preventDefault();
+    setImages([]);
     setPage(1);
     setSearchQuery(search);
   };

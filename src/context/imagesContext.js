@@ -15,40 +15,46 @@ export function GlobalContext({ children }) {
   const [showModal, setShowModal] = useState(false);
   const [largeImage, setLargeImage] = useState('');
 
-  const fetchImages = async () => {
-    const data = await getImages({ searchQuery, page, perPage });
-    if (!data.hits.length) {
-      throw alert('No images found');
-    }
-    setImages(data.hits);
-    setTotalImages(data.hits.length);
-  };
+  //   const fetchImages = async searchQuery => {
+  //     const data = await getImages({ searchQuery, page, perPage });
+  //     if (!data.hits.length) {
+  //       throw alert('No images found');
+  //     }
+  //     setImages(data.hits);
+  //     setTotalImages(data.hits.length);
+  //     setPage(page + 1);
+  //   };
 
   useEffect(() => {
     if (!searchQuery) {
       return;
     }
+    setIsLoading(true);
     const fetchImages = async () => {
       const data = await getImages({ searchQuery, page, perPage });
       if (!data.hits.length) {
         throw alert('No images found');
       }
-      setImages(data.hits);
-      setTotalImages(data.hits.length);
-      setPage(p => {
-        return p + 1;
+      setImages(prevState => {
+        return [...prevState, ...data.hits];
       });
+      setTotalImages(data.hits.length);
     };
     fetchImages();
-  }, [searchQuery]);
-
-  const loadMoreImgs = async () => {
-    setIsLoading(true);
-    const data = await getImages({ searchQuery, page, perPage });
-    setImages([...images, ...data.hits]);
-    setTotalImages(data.hits.length);
-    setPage(page + 1);
     setIsLoading(false);
+  }, [searchQuery, page]);
+
+  //   const loadMoreImgs = async () => {
+  //     setIsLoading(true);
+  //     const data = await getImages({ searchQuery, page, perPage });
+  //     setImages([...images, ...data.hits]);
+  //     setTotalImages(data.hits.length);
+  //     setPage(page + 1);
+  //     setIsLoading(false);
+  //     };
+
+  const loadMoreImgs = () => {
+    setPage(page + 1);
   };
 
   return (
