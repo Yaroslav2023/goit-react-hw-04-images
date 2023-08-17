@@ -28,8 +28,18 @@ export function GlobalContext({ children }) {
     if (!searchQuery) {
       return;
     }
+    const fetchImages = async () => {
+      const data = await getImages({ searchQuery, page, perPage });
+      if (!data.hits.length) {
+        throw alert('No images found');
+      }
+      setImages(data.hits);
+      setTotalImages(data.hits.length);
+      setPage(p => {
+        return p + 1;
+      });
+    };
     fetchImages();
-    setPage(page + 1);
   }, [searchQuery]);
 
   const loadMoreImgs = async () => {
