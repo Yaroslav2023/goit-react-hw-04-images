@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useMemo } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { getImages } from 'api/search.images';
 
 export const Context = createContext();
